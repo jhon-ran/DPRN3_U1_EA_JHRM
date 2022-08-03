@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32630.194
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DPRN3_U1_EA_JHRM", "DPRN3_U1_EA_JHRM.csproj", "{6047A279-5798-4706-A7B6-32BEDA07B85A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6047A279-5798-4706-A7B6-32BEDA07B85A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6047A279-5798-4706-A7B6-32BEDA07B85A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6047A279-5798-4706-A7B6-32BEDA07B85A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6047A279-5798-4706-A7B6-32BEDA07B85A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {72E85C4A-0449-4372-83EE-61B1C445C91B}
+	EndGlobalSection
+EndGlobal
