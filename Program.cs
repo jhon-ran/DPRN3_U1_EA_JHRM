@@ -1,5 +1,7 @@
 ﻿using System;
 using Geolocation;
+using System.Data.SqlClient;
+
 
 namespace DPRN3_U1_EA_JHRM
 {
@@ -86,6 +88,7 @@ namespace DPRN3_U1_EA_JHRM
 
             //Impresion de viaje usuario 1
             Console.WriteLine("Viaje de usuario 1");
+            Console.WriteLine("Dirección origen latitud:" + user1.OrigenLatitud);
             Console.WriteLine("Dirección cardinal:" + user1.DireccionCardinal);
             Console.WriteLine("Distancia en KM: "+ user1.Distancia);
             Console.WriteLine("Costo total de viaje: "+ user1.CostoViaje);
@@ -102,7 +105,62 @@ namespace DPRN3_U1_EA_JHRM
             Console.WriteLine("Fecha y hora estimada de llegada: " + user2.FechaSalida.AddMinutes(user2.HoraLlegada));
             Console.WriteLine("Tiempo estimado de recorrido en minutos: " + user2.HoraLlegada);
 
+            //instancia de conexión
+            //Conexion objetoConexion = new Conexion();
+            //objetoConexion.establecerConexion();
+
+
+            //Conexión
+            string connetionString;
+            SqlConnection cnn;
+            connetionString = "Server=localhost\\SQLEXPRESS;Database=Ubar;Trusted_Connection=True;";
+            cnn = new SqlConnection(connetionString);
+            cnn.Open();
+            Console.WriteLine("Se conectó correctamente a la Base de Datos");
+
+
+            //Enviar datos
+            SqlCommand command;
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            //Insert de datos usuario 1
+            String sql1 ="INSERT INTO Viaje (origen_latitud, origen_longitud, destino_latitud, destino_longitud, fecha_hora_salida, distancia, direccion_cardinal, costo_viaje) VALUES('" + user1.OrigenLatitud + "','" + user1.OrigenLongitud + "','" + user1.DestinoLatitud + "','" + user1.DestinoLongitud + "','" + user1.FechaSalida + "','"  + user1.Distancia + "','" + user1.DireccionCardinal + "','" + user1.CostoViaje + "')";
+            //insert de datos usuario 2
+            String sql2 = "INSERT INTO Viaje (origen_latitud, origen_longitud, destino_latitud, destino_longitud, fecha_hora_salida, distancia, direccion_cardinal, costo_viaje) VALUES('" + user2.OrigenLatitud + "','" + user2.OrigenLongitud + "','" + user2.DestinoLatitud + "','" + user2.DestinoLongitud + "','" + user2.FechaSalida + "','" + user2.Distancia + "','" + user2.DireccionCardinal + "','" + user2.CostoViaje + "')";
+            //adapter de datos usuario 1
+            command = new SqlCommand(sql1, cnn);
+            adapter.InsertCommand = new SqlCommand(sql1, cnn);
+            adapter.InsertCommand.ExecuteNonQuery();
+            //adapter de datos usuario 2
+            command = new SqlCommand(sql2, cnn);
+            adapter.InsertCommand = new SqlCommand(sql2, cnn);
+            adapter.InsertCommand.ExecuteNonQuery();
+
+            //Consultar datos con un id
+
+
+
+            command.Dispose();
+		    cnn.Close();
+
+
+
+
+            //SqlDataAdapter adapter = new SqlDataAdapter();
+
+            //insertar datos
+            //System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
+            //cmd.CommandType = System.Data.CommandType.Text;
+            //cmd.CommandText = "INSERT INTO Viaje (origen_latitud, origen_longitud, destino_latitud, destino_longitud, fecha_hora_salida) VALUES (@user1.OrigenLatitud, @user1.OrigenLongitud, @user1.DestinoLatitud, @user1.DestinoLongitud, @user1.FechaSalida)";
+
+            //SqlCommand cmd = new SqlCommand("INSERT INTO Viaje (origen_latitud, origen_longitud, destino_latitud, destino_longitud, fecha_hora_salida) VALUES('"+ user1.OrigenLatitud + "','"+ @user1.OrigenLongitud + "','" + @user1.DestinoLatitud + "','" + @user1.DestinoLongitud + "','" + @user1.FechaSalida + "',)", objetoConexion.establecerConexion());
+
+            //adapter.UpdateCommand = new SqlCommand("INSERT INTO Viaje (origen_latitud, origen_longitud, destino_latitud, destino_longitud, fecha_hora_salida) VALUES('" + user1.OrigenLatitud + "','" + @user1.OrigenLongitud + "','" + @user1.DestinoLatitud + "','" + @user1.DestinoLongitud + "','" + @user1.FechaSalida + "',)", objetoConexion.establecerConexion());
+
+            //adapter.UpdateCommand.ExecuteNonQuery();
+            //cmd.Dispose();
+            //objetoConexion.establecerConexion().Close();
         }
+
 
         class Usuario
          {   
@@ -195,7 +253,33 @@ namespace DPRN3_U1_EA_JHRM
             }
         }
 
-
-
+     
     }
+
+    class Conexion
+    {
+        SqlConnection conex = new SqlConnection();
+        //Cadena de conexión
+        string cadenaConexion = "Server=localhost\\SQLEXPRESS;Database=Ubar;Trusted_Connection=True;";
+
+        public SqlConnection establecerConexion()
+        {
+
+            try
+            {
+                conex.ConnectionString = cadenaConexion;
+                conex.Open();
+                Console.WriteLine("Se conectó correctamente a la Base de Datos");
+
+            }
+            catch (SqlException e)
+            {
+
+                Console.WriteLine("No se logró conectar a la Base de Datos" + e.ToString());
+            }
+
+            return conex;
+        }
+    }
+
 }
