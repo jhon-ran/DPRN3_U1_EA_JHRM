@@ -24,37 +24,22 @@ namespace DPRN3_U1_EA_JHRM
             user1.DestinoLongitud = -86.8746208288232;
             //Fecha y hora de salida
             user1.FechaSalida = DateTime.Now;
+
             //Inicializa los valores de latitud y longitud en Geolocation
-            //Coordinate origen = new Coordinate(user1.OrigenLatitud, user1.OrigenLongitud);
             user1.Origen = new Coordinate(user1.OrigenLatitud, user1.OrigenLongitud);
-            //Coordinate destino = new Coordinate(user1.DestinoLatitud, user1.DestinoLongitud);
             user1.Destino = new Coordinate(user1.DestinoLatitud, user1.DestinoLongitud);
 
             //Calcular distancia entre origen y destino y convertirla de millas a km
             user1.Distancia = GeoCalculator.GetDistance(user1.Origen, user1.Destino, 1) * 1.609344;
 
-            //convertir distancia de millas a km
-            //double distanciaKM = distancia * 1.609344;
-            //redondear distancia en KM
-            //double distanciaKMRedondeado = Math.Round(user1.Distancia, 2);
-
-            //string direccionCardinal = GeoCalculator.GetDirection(user1.Origen, user1.Destino);
             //Calcular dirección cardinal
             user1.DireccionCardinal = GeoCalculator.GetDirection(user1.Origen, user1.Destino);
 
-
-            //double horaLlegada = user1.Distancia / velocidadConst * minutos;
             //calcular hora estimada de llegada
             user1.HoraLlegada = user1.Distancia / velocidadConst * minutos;
 
             //calcular costo de viaje
-            //costoViaje = user1.Distancia / 2 * tarifaBase;
             user1.CostoViaje = user1.Distancia / 2 * tarifaBase;
-
-            // redondeo de costo de viaje
-            //double costoViajeRedondeado = Math.Round(user1.CostoViaje, 2);
-            //redondedo
-            //recorrido = Math.Round(user1.HoraLlegada, 2);
 
             //******************Usuario 1***************************************
 
@@ -87,6 +72,7 @@ namespace DPRN3_U1_EA_JHRM
 
 
             //Impresion de viaje usuario 1
+           
             Console.WriteLine("Viaje de usuario 1");
             Console.WriteLine("Dirección origen latitud:" + user1.OrigenLatitud);
             Console.WriteLine("Dirección cardinal:" + user1.DireccionCardinal);
@@ -97,6 +83,7 @@ namespace DPRN3_U1_EA_JHRM
             Console.WriteLine("Tiempo estimado de recorrido en minutos: "+ user1.HoraLlegada);
 
             //Impresion de viaje usuario 2
+            Console.WriteLine();
             Console.WriteLine("Viaje de usuario 2");
             Console.WriteLine("Dirección cardinal:" + user2.DireccionCardinal);
             Console.WriteLine("Distancia en KM: " + user2.Distancia);
@@ -104,11 +91,6 @@ namespace DPRN3_U1_EA_JHRM
             Console.WriteLine("Fecha y hora de salida: " + user2.FechaSalida);
             Console.WriteLine("Fecha y hora estimada de llegada: " + user2.FechaSalida.AddMinutes(user2.HoraLlegada));
             Console.WriteLine("Tiempo estimado de recorrido en minutos: " + user2.HoraLlegada);
-
-            //instancia de conexión
-            //Conexion objetoConexion = new Conexion();
-            //objetoConexion.establecerConexion();
-
 
             //Conexión
             string connetionString;
@@ -136,29 +118,45 @@ namespace DPRN3_U1_EA_JHRM
             adapter.InsertCommand.ExecuteNonQuery();
 
             //Consultar datos con un id
+            SqlCommand sqlquery;
+            SqlDataReader dataReader;
+
+            //Solicitar número de id
+            Console.WriteLine();
+            Console.WriteLine("Ingresa un número de id a buscar:");
+            int busqueda = Convert.ToInt32(Console.ReadLine());
+
+            //Ingresar número de id a buscar
+            String sql = "SELECT * FROM Viaje WHERE id = " + busqueda;
 
 
+            sqlquery = new SqlCommand(sql, cnn);
 
+            dataReader = sqlquery.ExecuteReader();
+
+            //Si hay datos, los lee
+            if (dataReader.Read())
+            {
+                Console.WriteLine();
+                Console.WriteLine("Datos de búsqueda:");
+                Console.WriteLine("id: " + dataReader["id"].ToString());
+                Console.WriteLine("Origen latitud: " + dataReader["origen_latitud"].ToString());
+                Console.WriteLine("Origen longitud: " + dataReader["origen_longitud"].ToString());
+                Console.WriteLine("Destino latitud: " + dataReader["destino_latitud"].ToString());
+                Console.WriteLine("Destino longitud: " + dataReader["destino_longitud"].ToString());
+                Console.WriteLine("Fecha y hora de salida: " + dataReader["fecha_hora_salida"].ToString());
+                Console.WriteLine("Distancia de trayecto: " + dataReader["distancia"].ToString());
+                Console.WriteLine("Distanccia en km: " + dataReader["distancia"].ToString());
+                Console.WriteLine("Dirección cardinal: " + dataReader["direccion_cardinal"].ToString());
+                Console.WriteLine("Costo del viaje: " + dataReader["costo_viaje"].ToString());
+
+            }
+            else { Console.WriteLine("No existe ese id"); }
+ 
+            //se cierra el comando y la conexión
             command.Dispose();
 		    cnn.Close();
 
-
-
-
-            //SqlDataAdapter adapter = new SqlDataAdapter();
-
-            //insertar datos
-            //System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
-            //cmd.CommandType = System.Data.CommandType.Text;
-            //cmd.CommandText = "INSERT INTO Viaje (origen_latitud, origen_longitud, destino_latitud, destino_longitud, fecha_hora_salida) VALUES (@user1.OrigenLatitud, @user1.OrigenLongitud, @user1.DestinoLatitud, @user1.DestinoLongitud, @user1.FechaSalida)";
-
-            //SqlCommand cmd = new SqlCommand("INSERT INTO Viaje (origen_latitud, origen_longitud, destino_latitud, destino_longitud, fecha_hora_salida) VALUES('"+ user1.OrigenLatitud + "','"+ @user1.OrigenLongitud + "','" + @user1.DestinoLatitud + "','" + @user1.DestinoLongitud + "','" + @user1.FechaSalida + "',)", objetoConexion.establecerConexion());
-
-            //adapter.UpdateCommand = new SqlCommand("INSERT INTO Viaje (origen_latitud, origen_longitud, destino_latitud, destino_longitud, fecha_hora_salida) VALUES('" + user1.OrigenLatitud + "','" + @user1.OrigenLongitud + "','" + @user1.DestinoLatitud + "','" + @user1.DestinoLongitud + "','" + @user1.FechaSalida + "',)", objetoConexion.establecerConexion());
-
-            //adapter.UpdateCommand.ExecuteNonQuery();
-            //cmd.Dispose();
-            //objetoConexion.establecerConexion().Close();
         }
 
 
@@ -254,32 +252,6 @@ namespace DPRN3_U1_EA_JHRM
         }
 
      
-    }
-
-    class Conexion
-    {
-        SqlConnection conex = new SqlConnection();
-        //Cadena de conexión
-        string cadenaConexion = "Server=localhost\\SQLEXPRESS;Database=Ubar;Trusted_Connection=True;";
-
-        public SqlConnection establecerConexion()
-        {
-
-            try
-            {
-                conex.ConnectionString = cadenaConexion;
-                conex.Open();
-                Console.WriteLine("Se conectó correctamente a la Base de Datos");
-
-            }
-            catch (SqlException e)
-            {
-
-                Console.WriteLine("No se logró conectar a la Base de Datos" + e.ToString());
-            }
-
-            return conex;
-        }
     }
 
 }
