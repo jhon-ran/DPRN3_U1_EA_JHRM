@@ -2,6 +2,9 @@
 using Geolocation;
 using System.Data.SqlClient;
 
+/*Programa que calcula la distancia en kilómetros del viaje, la dirección cardinal, el tiempo estimado del recorrido, 
+ hora estimada de llegada y el costo del viaje
+Con base a unas coordenadas y hora de salida*/
 
 namespace DPRN3_U1_EA_JHRM
 {
@@ -129,14 +132,15 @@ namespace DPRN3_U1_EA_JHRM
             //Ingresar número de id a buscar
             String sql = "SELECT * FROM Viaje WHERE id = " + busqueda;
 
-
+            //Se manda el query
             sqlquery = new SqlCommand(sql, cnn);
-
+            //Se lee el query
             dataReader = sqlquery.ExecuteReader();
 
             //Si hay datos, los lee
             if (dataReader.Read())
             {
+                //Se imprimen por pantalla los datos de la consulta
                 Console.WriteLine();
                 Console.WriteLine("Datos de búsqueda:");
                 Console.WriteLine("id: " + dataReader["id"].ToString());
@@ -159,7 +163,7 @@ namespace DPRN3_U1_EA_JHRM
 
         }
 
-
+        //Clase para instanciar usuarios y llenar sus atributos
         class Usuario
          {   
              //Ingresar la longitud de origen
